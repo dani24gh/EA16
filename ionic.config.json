@@ -1,0 +1,7 @@
+{
+  "name": "EA16",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
