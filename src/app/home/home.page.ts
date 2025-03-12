@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TaskService, Task } from '../task.service'; // Importar el servicio
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -10,31 +12,40 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule],
 })
-export class HomePage {
-  taskText = '';
-  tasks: string[] = [];
-  editingIndex: number | null = null; 
+export class HomePage implements OnInit {
+  taskText = ''; 
+  tasks$: Observable<Task[]> = new Observable(); // Cambiar a Observable para Firestore
+  editingTaskId: string | null = null; 
+
+  constructor(private taskService: TaskService) {} 
+
+  ngOnInit() {
+    this.tasks$ = this.taskService.getTasks(); // Obtener tareas desde Firestore
+  }
+
   addTask() {
     if (this.taskText.trim()) {
-      if (this.editingIndex !== null) {
-        this.tasks[this.editingIndex] = this.taskText;
-        this.editingIndex = null; 
+      const newTask: Task = { title: this.taskText, done: false };
+
+      if (this.editingTaskId) {
+        this.taskService.updateTask(this.editingTaskId, { title: this.taskText }).then(() => {
+          this.editingTaskId = null; 
+          this.taskText = '';
+        });
       } else {
-        this.tasks.push(this.taskText);
+        this.taskService.addTask(newTask).then(() => {
+          this.taskText = '';
+        });
       }
-      this.taskText = ''; 
     }
   }
 
-  editTask(index: number) {
-    this.taskText = this.tasks[index];
-    this.editingIndex = index; 
+  editTask(task: Task) {
+    this.taskText = task.title;
+    this.editingTaskId = task.id || null;
   }
 
-  deleteTask(index: number) {
-    this.tasks.splice(index, 1);
-    if (this.editingIndex === index) {
-      this.editingIndex = null; 
-    }
+  deleteTask(taskId: string) {
+    this.taskService.deleteTask(taskId);
   }
 }

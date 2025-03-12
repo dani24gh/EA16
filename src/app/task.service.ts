@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Firestore, collection, addDoc,  updateDoc, deleteDoc, doc, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, updateDoc, deleteDoc, doc, collectionData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 export interface Task {
@@ -7,12 +7,13 @@ export interface Task {
   title: string;
   done: boolean;
 }
-@Injectable({
-  providedIn: 'root'
-})
 
+@Injectable({
+  providedIn: 'root',
+})
 export class TaskService {
-private tasksCollection= collection(this.firestore, 'tasks');
+  private tasksCollection = collection(this.firestore, 'tasks');
+
   constructor(private firestore: Firestore) {}
 
   getTasks(): Observable<Task[]> {
@@ -23,7 +24,7 @@ private tasksCollection= collection(this.firestore, 'tasks');
     return addDoc(this.tasksCollection, task);
   }
 
-  updateTask(id: string, data:Partial<Task>) {
+  updateTask(id: string, data: Partial<Task>) {
     const taskDoc = doc(this.firestore, `tasks/${id}`);
     return updateDoc(taskDoc, data);
   }
@@ -32,5 +33,4 @@ private tasksCollection= collection(this.firestore, 'tasks');
     const taskDoc = doc(this.firestore, `tasks/${id}`);
     return deleteDoc(taskDoc);
   }
-
 }

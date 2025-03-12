@@ -5,15 +5,16 @@
 
 export const environment = {
   production: false,
-  firebaseConfig:{
+  firebaseConfig: {
     apiKey: "AIzaSyBTnFDs5G1mLraBvhUrpY1kxDeG_oPs93U",
     authDomain: "ea16-f263c.firebaseapp.com",
     projectId: "ea16-f263c",
-    storageBucket: "ea16-f263c.firebasestorage.app",
+    storageBucket: "ea16-f263c.appspot.com",
     messagingSenderId: "508544697957",
-    appId: "1:508544697957:web:faad0bb3dc42fc5d42a88c"
-  }
+    appId: "1:508544697957:web:faad0bb3dc42fc5d42a88c",
+  },
 };
+
 
 /*
  * For easier debugging in development mode, you can import the following file

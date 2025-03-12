@@ -9,16 +9,16 @@
   <ion-item>
     <ion-input [(ngModel)]="taskText" placeholder="Escribe una tarea"></ion-input>
     <ion-button (click)="addTask()" color="primary">
-      {{ editingIndex === null ? 'Agregar' : 'Actualizar' }}
+      {{ editingTaskId ? 'Actualizar' : 'Agregar' }}
     </ion-button>
   </ion-item>
 
-  <!-- Lista de tareas -->
+  <!-- Lista de tareas desde Firestore -->
   <ion-list>
-    <ion-item *ngFor="let task of tasks; let i = index">
-      <ion-label>{{ task }}</ion-label>
-      <ion-button (click)="editTask(i)" color="warning">editar</ion-button>
-      <ion-button (click)="deleteTask(i)" color="danger">borrar</ion-button>
+    <ion-item *ngFor="let task of tasks$ | async">
+      <ion-label>{{ task.title }}</ion-label>
+      <ion-button (click)="editTask(task)" color="warning">Editar</ion-button>
+      <ion-button (click)="deleteTask(task.id!)" color="danger">Borrar</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>
